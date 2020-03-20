@@ -11,8 +11,10 @@
 
 # CURRENT QUESTIONS:
 # 1. Do ALL of the executable .py files derive from this? Or do some run in parallel?
+# 		yes, this is the only code on this top-level
 # 2. Doesn't QGroundControl take care of sending corresponding commands from controller to motors?
 # 3. Is it better to have two distinct while loops for modes rc and auto, or better to have it nested? or other?
+# 		auto is nested inside rc
 # 4. What would it look like to have sensor input in the autonomy mode section of the code?
 
 # modes: remote_control (rc) and autonomous (auto)
@@ -36,7 +38,10 @@ roslaunch node_1 node_2 ... node_n
 mode = check_mode(self)
 
 # Initialize time
-time = time.initialize()
+startTime = time.initialize()
+
+# Set debug = False initially (flags true if problem encountered)
+debug = false  
 
 # Set some convenient thruster configurations
 surge() = thruster(0,1,2,3)
@@ -45,9 +50,19 @@ yaw() = thruster(0,1,2,3)
 sway() = thruster(0,1,2,3)
 pitch = thruster(4,5,6,7)
 
+# ---------------- INITIALIZATION -----------------------#
+
+# Initialize logging
+dataLogger = DataLogger.InitializeLogging(startTime)
+systemLogger = logging.getLogger("systemLogger")
+
+# Initialize sensors / actuators for initial diagnostics check
+initialize() # reads data from sensors, spins/reads data from thrusters
+
 # make sure the vehicle is operating
 while auv == running(in water, powered on, != shutdown):
 
+	mode = check_mode(self)
 # -------------- REMOTE CONTROL MODE --------------------#
 
 	while mode == rc:
@@ -57,37 +72,48 @@ while auv == running(in water, powered on, != shutdown):
 		control_thrusters() = command
 
 		# check to make sure still in rc mode and running
-		if check_mode(self) != rc or != running():
-			break
+		if check_mode(self) == auto && running():
+			
+			#----------------    AUTONOMY MODE    ------------------#
 
-#----------------    AUTONOMY MODE    ------------------#
+			# NEED TO ADD CODE THAT READS VEHICLE POSITION AND ORIENTATION
 
-# NEED TO ADD CODE THAT READS VEHICLE POSITION AND ORIENTATION
-
-	# sample autonomy code aimed at driving the auv around the perimeter of an imaginary square.
-	while mode == auto:
-
-		# While auv is running, complete the square 
-		while running():
-
-			# Begin legs of path
-			for i in range(4):
-
-				# Drive forward (figure out how to add duration -- add while time < xx)
-				surge[200,200,200,200] (assumes -500 == full reverse, 0 == stopped, 500 == full ahead) 
-
-				# Turn right 90 degrees
-				yaw[100, 100, -100, -100] (arbitrary signs, don't know how it will be yet)
-
+			# sample autonomy code aimed at driving the auv around the perimeter of an imaginary square.
+			while mode == auto:
 
 			
+				# Begin legs of path
+				for i in range(4): # 4 sides in a square
+
+					while clear_path() # performs movement if it won't collide 
+					
+						# Drive forward (figure out how to add duration -- add while time < xx)
+						surge[200,200,200,200] (assumes -500 == full reverse, 0 == stopped, 500 == full ahead) 							
+
+						# Turn right 90 degrees
+						yaw[100, 100, -100, -100] (arbitrary signs, don't know how it will be yet)
+					
+
+						mode == check_mode(self)	
 			
-		
-#STOPPED HERE. 
+# Additional functionality (for other files)			
 
 def check_mode():
-	if joystick signall received:
+	if joystick signal received:
 		return rc
 
 	else
 		return auto
+
+def initialize():
+	all sensors = read.data()
+	spin.thrusters()
+	if sensor A fails:
+		debug = a
+	elif sebsor B fails:
+		debug = b
+	...
+	...
+	...
+	
+	return debug 
