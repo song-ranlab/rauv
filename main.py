@@ -96,24 +96,4 @@ while auv == running(in water, powered on, != shutdown):
 
 						mode == check_mode(self)	
 			
-# Additional functionality (for other files)			
 
-def check_mode():
-	if joystick signal received:
-		return rc
-
-	else
-		return auto
-
-def initialize():
-	all sensors = read.data()
-	spin.thrusters()
-	if sensor A fails:
-		debug = a
-	elif sebsor B fails:
-		debug = b
-	...
-	...
-	...
-	
-	return debug 
