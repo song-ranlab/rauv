@@ -73,3 +73,18 @@ def initialize(debug): #debug should be set to False initially and will be updat
 			
 	return debug
 	
+# Define function that indicates that the AUV is underwater, initialized, and no killswitch
+def running(debug):
+	
+	if depth.reading > nominal air pressure:
+		if debug == False:
+			return True
+	else:
+		return False
+
+# Define function that checks whether the vehicle is in rc or auto mode
+def check_mode():
+	if joystick signal received:
+		return rc
+	else
+		return auto
