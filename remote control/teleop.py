@@ -2,15 +2,12 @@ import rospy
 from std_msgs.msg import string
 
 # grabing input from user
-'''
-need to instal joy on computer: http://wiki.ros.org/joy/Tutorials/ConfiguringALinuxJoystick#Installing
-'''
-'''
-intended for xbox controller
-'''
+#need to instal joy on computer: http://wiki.ros.org/joy/Tutorials/ConfiguringALinuxJoystick/Installing
+#intended for xbox controller
 
-from sensor_msgs.msg Joy
-from geomtry_msgs.msg import
+
+from sensor_msgs.msg import Joy
+from geomtry_msgs.msg import Twist
 
 
 def callback(data)
