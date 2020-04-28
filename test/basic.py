@@ -24,20 +24,7 @@ def moving(data)
     twist.z.translate = data.z
     twist.z.rotate = data.z_angular
 
-# mission script
-def main():
-    while != rospy.is.shutdown:
-        t = 0
-        time_move_to_gate = timecalc(3, 0.5)
-        # moving to
-        while t < time_move_to_gate:
 
-            data.x = 0
-            data.y = 0
-            data.z = 1
-            moving(data)
-            #update condition
-            t += 1
 
 # Opening gate code would go here
 
@@ -100,6 +87,21 @@ def start():
     #start the node
     rospy.init node()
     rospy.spin()
+    
+# mission script
+#def main():
+    while != rospy.is.shutdown:
+        t = 0
+        time_move_to_gate = timecalc(3, 0.5)
+        # moving to
+        while t < time_move_to_gate:
+
+            data.x = 0
+            data.y = 0
+            data.z = 1
+            moving(data)
+            #update condition
+            t += 1    
 
 if name == '__main__':
     start()
