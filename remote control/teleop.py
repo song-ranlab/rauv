@@ -1,79 +1,51 @@
-#according to parameter thruster will move auv 50 cm/s
-
 import rospy
-import math
+from std_msgs.msg import string
 
-#following mission path on 
-#https://docs.google.com/presentation/d/1byiLI5PmSsF17uo3vu67g_D1zAS3xIYWgthhTiYyXOI/edit#slide=id.g6c44cb7098_37_23
+# grabing input from user
+'''
+need to instal joy on computer: http://wiki.ros.org/joy/Tutorials/ConfiguringALinuxJoystick#Installing
+'''
+'''
+intended for xbox controller
+'''
 
+from sensor_msgs.msg import Joy
 from geomtry_msgs.msg import Twist
 
-def main():
-    while != rospy.is.shutdown:
-        t = 0
-        time_move_to_gate = timecalc(3, 0.5)
-        # moving to
-        while t < time_move_to_gate:
 
-            data.x = 0;
-            data.y = 1;
-            data.z = 0;
-            moving(data)
-            #update condition
-            t += 1
+def callback(data)
+    twist = Twist()
 
-# Opening gate code would go here
+    #verticle of left stick
+    #move foward or backwards
+    twist.linear_y = data.axes[1]
+    #horizontal of left stick
+    #move left right
+    twist.linear_x = data.axes[0]
 
-        #moving towards marker
-        t = 0;
-        time_move_to_marker  = timecalc(10,0.5)
-        while t<time_move_to_marker:
-            data.x = 0;
-            data.y = 1;
-            data.z = 0;
+    #move up or down
+    # 4 = left button, 5 = right button
+    twist.linear_z_u = data.buttons[4]
+    twist.linear_z_d = data.buttons[5]
 
-            t += 1
+    #rotate on x - y plane
+    #horizontal of the right stick
+    twist.angular_xy = data.axes[2]
 
-        while t< time_to_uturn:
-            #data.xy.angular = math.cos(x)
-            data.xy.angular = 1;
+    #rotate y-z axis
+    #verticle of the right stick
+    twist.angularr_yz = data.axes[3]
+    pub.publish(twist)
 
 
-    pun.publish(twist)
-
-# Printing string command for simulator
-def moving(data)
-    twist = twist()
-
-    #twist.mode = "guided"
-    twist.x.translate = data.x
-    twist.y.translate = data.y
-    twist.z.translate = data.z
-    twist.xy.rotate = data.xy_angular
-
-
-#def moving(data):
-        #para = parameter()
-
-        #para.m = ("mode guide")
-        #para.x = twist.x
-        #para.v =  "velocity {} {} {}".format(data.x,data.y,data.z)
-        #para.sy = "setyaw {} {} {}".format(data.yaw_angle, data.yaw_speed, data.relative)
-
-        pub.publish(para)
-
-#calculating the time needed based on min speed of 50cm/s
-def timecalc(distance, speed)
-    #units:meters
-    time = distance/speed
-    return time
-
-#starting the node
 def start():
 
     global pub
     #publishing commands for auv to move
     pub = rospy.Publisher('Navikai/cmd', Twist)
+
+    # subscribed for user input
+    rospy.Subscriber("joy", Joy, callback)
 
     #start the node
     rospy.init node()
@@ -81,3 +53,4 @@ def start():
 
 if name == '__main__':
     start()
+
